@@ -59,7 +59,6 @@
         .input-group {
             margin-bottom: 15px;
             text-align: left;
-            position: relative;
         }
         
         label {
@@ -83,16 +82,6 @@
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
-        }
-        
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 35px;
-            cursor: pointer;
-            color: var(--text-color);
-            font-size: 14px;
-            user-select: none;
         }
         
         button {
@@ -158,6 +147,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Logo - Remplacez "logo.png" par le chemin de votre logo -->
         <img src="nextlogo.png" alt="Logo" class="logo">
         
         <div id="login" class="form active">
@@ -170,7 +160,6 @@
             <div class="input-group">
                 <label for="login-password">Mot de passe</label>
                 <input type="password" id="login-password" placeholder="••••••••" required>
-                <span class="toggle-password" onclick="togglePasswordVisibility('login-password')">Afficher</span>
                 <div class="error-message" id="login-password-error"></div>
             </div>
             <button id="login-btn">Se connecter</button>
@@ -192,7 +181,6 @@
             <div class="input-group">
                 <label for="signup-password">Mot de passe</label>
                 <input type="password" id="signup-password" placeholder="••••••••" required>
-                <span class="toggle-password" onclick="togglePasswordVisibility('signup-password')">Afficher</span>
                 <div class="error-message" id="signup-password-error"></div>
             </div>
             <button id="signup-btn">S'inscrire</button>
@@ -201,12 +189,10 @@
     </div>
 
     <script>
-        // Fonction pour basculer entre les formulaires
         function toggleForm() {
             document.getElementById('login').classList.toggle('active');
             document.getElementById('signup').classList.toggle('active');
         }
-        
         // Fonction pour afficher/masquer le mot de passe
         function togglePasswordVisibility(inputId) {
             const input = document.getElementById(inputId);
@@ -219,8 +205,7 @@
                 input.type = "password";
                 toggle.textContent = "Afficher";
             }
-        }
-        
+            
         // Validation de base
         document.getElementById('login-btn').addEventListener('click', function() {
             validateLoginForm();
@@ -307,40 +292,22 @@
         }
     </script>
 
-       <!-- Dans votre formulaire de connexion - remplacez le script Firebase par : -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    <!-- Intégration Firebase -->
+    <script type="module">
+        // Importation des modules Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBzMi3F5vLM0bYxTY1KuBJf7eD6Nx96wsQ",
-    authDomain: "login-ec53a.firebaseapp.com",
-    projectId: "login-ec53a",
-    storageBucket: "login-ec53a.appspot.com",
-    messagingSenderId: "123644267529",
-    appId: "1:123644267529:web:5409efdf896971c655bcd8"
-  };
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzMi3F5vLM0bYxTY1KuBJf7eD6Nx96wsQ",
+            authDomain: "login-ec53a.firebaseapp.com",
+            projectId: "login-ec53a",
+            storageBucket: "login-ec53a.appspot.com",
+            messagingSenderId: "123644267529",
+            appId: "1:123644267529:web:5409efdf896971c655bcd8"
+        };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  document.getElementById("login-btn").addEventListener("click", function(event) {
-    event.preventDefault();
-    
-    if (!validateLoginForm()) return;
-    
-    let email = document.getElementById("login-email").value;
-    let password = document.getElementById("login-password").value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Redirection avec les paramètres dans l'URL
-        window.location.href = `https://gsbr22.github.io/nextgencorp.fr/?loggedIn=true&email=${encodeURIComponent(email)}`;
-      })
-      .catch((error) => {
-        alert("Erreur de connexion: " + error.message);
-      });
-  });
         // Initialisation de Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -357,10 +324,6 @@
 
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Stocker les informations de l'utilisateur
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('userName', name);
-                    
                     alert("Compte créé avec succès !");
                     document.getElementById("signup-name").value = "";
                     document.getElementById("signup-email").value = "";
@@ -389,12 +352,8 @@
 
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Stocker l'information de connexion
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('lastLogin', new Date().toISOString());
-                    
-                    // Redirection vers votre site
-                    window.location.href = "https://gsbr22.github.io/nextgencorp.fr/";
+                    // Redirection vers votre site Canva après connexion réussie
+                    window.location.href = "https://www.canva.com/design/ABCDEFGHIJKL/your-design"; // Remplacez par l'URL de votre site Canva
                 })
                 .catch((error) => {
                     let errorMessage = "Erreur lors de la connexion";
